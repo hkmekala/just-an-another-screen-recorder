@@ -64,11 +64,15 @@ async function handleStop(e: any) {
     });
 
     if (filePath) {
-        writeFile(filePath, buffer, () => console.log('video saved successfully!'));
+        writeFile(filePath, buffer, () => {
+            console.log('video saved successfully!');
+            alert('File Has been saved!');
+        });
+        
     }
 }
 
-//Select the window sources.
+//Select the video sources.
 async function selectSource(source: any) {
     videoSelectBtn.innerText = source.name;
 

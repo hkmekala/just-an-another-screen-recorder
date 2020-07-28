@@ -81,6 +81,7 @@ function getScreens() {
     });
 }
 videoSelectBtn.onclick = getScreens;
+//Push the Video Chunk into an array.
 function handleDataAvailable(e) {
     console.log('video data available');
     recordedChunks.push(e.data);
@@ -106,13 +107,17 @@ function handleStop(e) {
                 case 2:
                     filePath = (_c.sent()).filePath;
                     if (filePath) {
-                        fs_1.writeFile(filePath, buffer, function () { return console.log('video saved successfully!'); });
+                        fs_1.writeFile(filePath, buffer, function () {
+                            console.log('video saved successfully!');
+                            alert('File Has been saved!');
+                        });
                     }
                     return [2 /*return*/];
             }
         });
     });
 }
+//Select the video sources.
 function selectSource(source) {
     return __awaiter(this, void 0, void 0, function () {
         var constraints, stream, options;
