@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var path = require("path");
+var ipfs_1 = require("ipfs");
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
     electron_1.app.quit();
@@ -41,4 +42,9 @@ electron_1.app.on('activate', function () {
 });
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+electron_1.ipcMain.on('upload-to-ipfs', function (event, arg) {
+    var node = ipfs_1.IPFS.create();
+    var results = node.add(arg);
+    event.returnValue = results;
+});
 //# sourceMappingURL=index.js.map

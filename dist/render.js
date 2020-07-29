@@ -42,6 +42,7 @@ var dialog = electron_1.remote.dialog, Menu = electron_1.remote.Menu;
 var mediaRecoder;
 var recordedChunks = [];
 var videoElement = document.querySelector('video');
+var filePathStore = null;
 // Start Button On-Click
 var startBtn = document.getElementById('startBtn');
 startBtn.onclick = function (e) {
@@ -109,6 +110,7 @@ function handleStop(e) {
                     if (filePath) {
                         fs_1.writeFile(filePath, buffer, function () {
                             console.log('video saved successfully!');
+                            filePathStore = filePath;
                             alert('File Has been saved!');
                         });
                     }
@@ -148,4 +150,13 @@ function selectSource(source) {
         });
     });
 }
+var upload = document.getElementById('uploadToIPFS');
+upload.onclick = function () {
+    if (filePathStore != null) {
+        electron_1.ipcRenderer.sendSync('upload-to-ipfs', filePathStore);
+    }
+};
+electron_1.ipcRenderer.on('upload-complete', function (event, arg) {
+    alert("Upload has been completed: " + arg);
+});
 //# sourceMappingURL=render.js.map

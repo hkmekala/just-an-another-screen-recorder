@@ -1,4 +1,4 @@
-import { desktopCapturer, remote } from 'electron';
+import { desktopCapturer, remote, ipcRenderer } from 'electron';
 import { writeFile } from 'fs';
 
 const { dialog, Menu } = remote;
@@ -6,6 +6,7 @@ const { dialog, Menu } = remote;
 let mediaRecoder: any;
 const recordedChunks: any = [];
 const videoElement = document.querySelector('video');
+let filePathStore: string = null;
 
 // Start Button On-Click
 const startBtn = document.getElementById('startBtn');
@@ -66,6 +67,7 @@ async function handleStop(e: any) {
     if (filePath) {
         writeFile(filePath, buffer, () => {
             console.log('video saved successfully!');
+            filePathStore = filePath;
             alert('File Has been saved!');
         });
         
@@ -97,3 +99,14 @@ async function selectSource(source: any) {
     mediaRecoder.ondataavailable = handleDataAvailable;
     mediaRecoder.onstop = handleStop;
 }
+
+const upload = document.getElementById('uploadToIPFS');
+upload.onclick = () => {
+    if(filePathStore != null) {
+        ipcRenderer.sendSync('upload-to-ipfs', filePathStore);
+    }
+};
+
+ipcRenderer.on('upload-complete', (event, arg) => {
+    alert(`Upload has been completed: ${arg}`);
+})
