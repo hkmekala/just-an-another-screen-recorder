@@ -27,6 +27,7 @@ stopBtn.onclick = (e: any) => {
 
 //Getting Screens on click.
 const videoSelectBtn = document.getElementById('videoSelectBtn')
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 async function getScreens() {
     const inputSources = await desktopCapturer.getSources({
         types: ['window', 'screen']
@@ -74,7 +75,9 @@ async function handleStop(e: any) {
     }
 }
 
-//Select the video sources.
+/*
+* Select the source of the Video.
+*/
 async function selectSource(source: any) {
     videoSelectBtn.innerText = source.name;
 
